@@ -15,3 +15,13 @@ jobs:
         run: pip install flake8
       - name: Run flake8
         run: flake8 api/
+  run-tests:
+    needs: python-formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Dependencies
+        uses: pip install -r requirements.txt
+      - name: Run Tests
+        run: pytest
