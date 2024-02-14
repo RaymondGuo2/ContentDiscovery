@@ -22,6 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Dependencies
-        uses: pip install -r requirements.txt
+        run: pip install -r requirements.txt
       - name: Run Tests
         run: pytest
