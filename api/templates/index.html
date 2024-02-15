@@ -1,3 +1,15 @@
-<html>
-    <p>Hello World!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Netflix Shows</title>
+</head>
+<body>
+    <h1>Netflix Shows</h1>
+    <ul>
+        {% for show in shows %}
+            <li>{{ show }}</li> <!-- Adjust according to your table structure -->
+        {% endfor %}
+    </ul>
+</body>
 </html>
