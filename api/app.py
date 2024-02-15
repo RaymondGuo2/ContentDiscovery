@@ -1,9 +1,6 @@
 from flask import Flask, render_template
 import os
-from dotenv import load_dotenv
 import psycopg2
-
-load_dotenv()
 
 app = Flask(__name__)
 
