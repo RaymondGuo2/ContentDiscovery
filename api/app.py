@@ -13,7 +13,11 @@ DB_HOST = os.environ.get("DB_HOST")
 DB_PORT = os.environ.get("DB_PORT")
 DB_NAME = os.environ.get("DB_NAME")
 
-connection_string = f"dbname={DB_NAME} user={DB_USER} password={DB_PASSWORD} host={DB_HOST} port={DB_PORT}"
+connection_string = (
+    f"dbname={DB_NAME} user={DB_USER} "
+    f"password={DB_PASSWORD} host={DB_HOST} port={DB_PORT}"
+)
+
 
 @app.route('/')
 def index():
@@ -26,6 +30,7 @@ def index():
     conn.close()
 
     return render_template("index.html", shows=shows)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
