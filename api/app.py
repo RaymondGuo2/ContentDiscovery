@@ -20,7 +20,16 @@ connection_string = (
 def index():
     conn = psycopg2.connect(connection_string)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM netflix")
+    cur.execute("""SELECT DISTINCT show_title
+        FROM "netflix" AS s1
+        WHERE country_iso2 = 'JP'
+        AND NOT EXISTS (
+        SELECT 1
+        FROM "netflix" AS s2
+        WHERE s2.show_title = s1.show_title
+        AND s2.country_iso2 != 'JP'
+    );
+    """)
     shows = cur.fetchall()
 
     cur.close()
