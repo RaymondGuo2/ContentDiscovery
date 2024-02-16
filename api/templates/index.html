@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,8 +8,78 @@
     <h1>Netflix Shows</h1>
     <ul>
         {% for show in shows %}
-            <li>{{ show }}</li> <!-- Adjust according to your table structure -->
+            <li>{{ show }}</li>
         {% endfor %}
     </ul>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive World Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { width: 100%; height: 600px; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  var map = L.map('map').setView([20, 0], 2); // Initialize the map with a center and zoom level
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // Add OpenStreetMap tiles
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Sample minimal GeoJSON data for demonstration purposes
+  var geoJsonData = {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "France",
+          "url": "https://example.com/france" // Replace with the actual URL for France
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[2.4609375, 46.07323062540835], [2.4609375, 48.922499263758255], [5.80078125, 48.922499263758255], [5.80078125, 46.07323062540835], [2.4609375, 46.07323062540835]]] // Simplified example; use accurate coordinates
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Germany",
+          "url": "https://example.com/germany" // Replace with the actual URL for Germany
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[10.01953125, 48.922499263758255], [10.01953125, 51.6180165487737], [14.4140625, 51.6180165487737], [14.4140625, 48.922499263758255], [10.01953125, 48.922499263758255]]] // Simplified example; use accurate coordinates
+        }
+      }
+      // Add other countries as needed
+    ]
+  };
+
+  function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.url) {
+      layer.on('click', function() {
+        window.location = feature.properties.url; // Redirect on click
+      });
+    }
+  }
+
+  L.geoJSON(geoJsonData, {
+    onEachFeature: onEachFeature
+  }).addTo(map);
+</script>
+
 </body>
 </html>

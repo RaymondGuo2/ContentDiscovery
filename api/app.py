@@ -22,12 +22,12 @@ def index():
     cur = conn.cursor()
     cur.execute("""SELECT DISTINCT show_title
         FROM "netflix" AS s1
-        WHERE country_iso2 = 'JP'
+        WHERE country_iso2 = 'GB'
         AND NOT EXISTS (
         SELECT 1
         FROM "netflix" AS s2
         WHERE s2.show_title = s1.show_title
-        AND s2.country_iso2 != 'JP'
+        AND s2.country_iso2 != 'GB'
     );
     """)
     shows = cur.fetchall()
