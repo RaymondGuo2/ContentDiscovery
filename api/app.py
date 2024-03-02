@@ -48,5 +48,6 @@ def get_shows():
     show_titles = [show[0] for show in shows]
     return jsonify(show_titles)
 
+
 if __name__ == "__main__":
     app.run(debug=True)
