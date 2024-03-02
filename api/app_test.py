@@ -17,6 +17,18 @@ class TestGetShows(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, ['The Innocent'])
 
+    @patch('app.psycopg2.connect')
+    def test_empty_result_set(self, mock_connect):
+        mock_cursor = MagicMock()
+        mock_cursor.fetchall.return_value = []
+        mock_connect.return_value.cursor.return_value = mock_cursor
+
+        with app.test_client() as client:
+            response = client.get('/shows?country=US')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, [])
+
 
 if __name__ == '__main__':
     unittest.main()
