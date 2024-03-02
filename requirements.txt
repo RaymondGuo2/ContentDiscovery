@@ -21,6 +21,7 @@ packaging==23.2
 pluggy==1.4.0
 postgrest==0.16.1
 psycopg==3.1.13
+psycopg2==2.9.3
 psycopg-binary==3.1.13
 pycodestyle==2.11.1
 pydantic==1.10.14
