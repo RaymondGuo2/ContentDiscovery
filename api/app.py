@@ -3,6 +3,7 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from flask_cors import CORS
+import pycountry
 
 load_dotenv()
 
@@ -22,9 +23,20 @@ connection_string = (
 )
 
 
+def country_valid(code):
+    try:
+        country = pycountry.countries.lookup(code.upper())
+        return country is not None
+    except LookupError:
+        return False
+
+
 @app.route('/shows')
 def get_shows():
     country_iso2 = request.args.get('country', default='GB', type=str)
+
+    if not country_valid(country_iso2):
+        return jsonify({"error": "Invalid country code."}), 400
 
     conn = psycopg2.connect(connection_string)
     cur = conn.cursor()
@@ -46,6 +58,8 @@ def get_shows():
     conn.close()
 
     show_titles = [show[0] for show in shows]
+    if not show_titles:
+        return jsonify({"message": "There are no unique shows for this country."}), 200
     return jsonify(show_titles)
 
 

@@ -24,10 +24,22 @@ class TestGetShows(unittest.TestCase):
         mock_connect.return_value.cursor.return_value = mock_cursor
 
         with app.test_client() as client:
-            response = client.get('/shows?country=US')
+            response = client.get('/shows?country=CU')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json, [])
+        self.assertEqual(response.json, {'message': 'There are no unique shows for this country.'})
+
+    @patch('app.psycopg2.connect')
+    def test_invalid_country_code(self, mock_connect):
+        mock_cursor = MagicMock()
+        mock_cursor.fetchall.return_value = []
+        mock_connect.return_value.cursor.return_value = mock_cursor
+
+        with app.test_client() as client:
+            response = client.get('/shows?country=ZZZ')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json, {"error": "Invalid country code."})
 
 
 if __name__ == '__main__':
