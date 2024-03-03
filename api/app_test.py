@@ -4,24 +4,30 @@ from app import app
 
 
 class TestGetShows(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.mock_cursor = MagicMock()
+
+    def setUp(self):
+        self.mock_cursor.fetchall.reset_mock()
+
+    @classmethod
+    @patch('app.psycopg2.connect')
+    def setUpClass(cls, mock_connect):
+        cls.mock_cursor = MagicMock()
+        mock_connect.return_value.cursor.return_value = cls.mock_cursor
+
     def test_get_shows_valid_input(self):
-        mock_cursor = MagicMock()
-        mock_cursor.fetchall.return_value = [('The Innocent',)]
+        self.mock_cursor.fetchall.return_value = [('The Innocent',)]
 
-        with patch('app.psycopg2.connect') as mock_connect:
-            mock_connect.return_value.cursor.return_value = mock_cursor
-
-            with app.test_client() as client:
-                response = client.get('/shows?country=RS')
+        with app.test_client() as client:
+            response = client.get('/shows?country=RS')
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, ['The Innocent'])
 
-    @patch('app.psycopg2.connect')
-    def test_empty_result_set(self, mock_connect):
-        mock_cursor = MagicMock()
-        mock_cursor.fetchall.return_value = []
-        mock_connect.return_value.cursor.return_value = mock_cursor
+    def test_empty_result_set(self):
+        self.mock_cursor.fetchall.return_value = []
 
         with app.test_client() as client:
             response = client.get('/shows?country=CU')
@@ -31,12 +37,7 @@ class TestGetShows(unittest.TestCase):
             response.json, {
                 'message': 'There are no unique shows for this country.'})
 
-    @patch('app.psycopg2.connect')
-    def test_invalid_country_code(self, mock_connect):
-        mock_cursor = MagicMock()
-        mock_cursor.fetchall.return_value = []
-        mock_connect.return_value.cursor.return_value = mock_cursor
-
+    def test_invalid_country_code(self):
         with app.test_client() as client:
             response = client.get('/shows?country=ZZZ')
 
