@@ -34,7 +34,8 @@ class TestGetShows(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.json, {'message': 'There are no unique shows for this country.'})
+            response.json, {
+                'message': 'There are no unique shows for this country.'})
 
     def test_invalid_country_code(self):
         with app.test_client() as client:
@@ -42,6 +43,7 @@ class TestGetShows(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json, {"error": "Invalid country code."})
+
 
 if __name__ == '__main__':
     unittest.main()
