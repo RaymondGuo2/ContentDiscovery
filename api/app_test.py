@@ -27,7 +27,9 @@ class TestGetShows(unittest.TestCase):
             response = client.get('/shows?country=CU')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json, {'message': 'There are no unique shows for this country.'})
+        self.assertEqual(
+            response.json, {
+                'message': 'There are no unique shows for this country.'})
 
     @patch('app.psycopg2.connect')
     def test_invalid_country_code(self, mock_connect):

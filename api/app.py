@@ -59,7 +59,8 @@ def get_shows():
 
     show_titles = [show[0] for show in shows]
     if not show_titles:
-        return jsonify({"message": "There are no unique shows for this country."}), 200
+        return jsonify(
+            {"message": "There are no unique shows for this country."}), 200
     return jsonify(show_titles)
 
 
