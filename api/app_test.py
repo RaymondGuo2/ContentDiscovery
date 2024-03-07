@@ -44,7 +44,6 @@ class TestGetShows(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json, {"error": "Invalid country code."})
 
-
     @patch('app.psycopg2.connect')
     def test_database_connection_error(self, mock_connect):
         mock_connect.side_effect = psycopg2.OperationalError(
