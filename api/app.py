@@ -64,5 +64,28 @@ def get_shows():
     return jsonify(show_titles)
 
 
+@app.route('/search')
+def search():
+    search_query = request.args.get('query', '')
+    
+    conn = psycopg2.connect(connection_string)
+    cur = conn.cursor()
+    
+    sql_query = """SELECT DISTINCT show_title FROM "netflix" WHERE 
+        country_name ILIKE %s OR 
+        country_iso2 ILIKE %s OR 
+        show_title ILIKE %s;"""
+    like_pattern = f'%{search_query}%'
+    cur.execute(sql_query, (like_pattern, like_pattern, like_pattern))
+    
+    results = cur.fetchall() 
+    cur.close()
+    conn.close()
+    
+    show_titles = [result[0] for result in results]
+    
+    return jsonify(show_titles)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
