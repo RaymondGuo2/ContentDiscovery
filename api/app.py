@@ -42,8 +42,10 @@ def get_shows():
         conn = psycopg2.connect(connection_string)
     except psycopg2.OperationalError as e:
         app.logger.error(f"Database connection error: {str(e)}")
-        return jsonify({"error": "Internal server error, could not connect to database."}), 500
-    
+        return jsonify(
+            {"error": "Internal server error, could not connect to database."}
+        ), 500
+
     cur = conn.cursor()
 
     cur.execute("""SELECT DISTINCT show_title
