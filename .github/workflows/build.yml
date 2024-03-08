@@ -50,5 +50,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/myapp:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository_owner }}/netflix-content:${{ github.sha }}
           platforms: linux/amd64
