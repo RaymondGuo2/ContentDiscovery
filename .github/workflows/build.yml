@@ -55,5 +55,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ steps.lowercase.outputs.actor }}/netflix-content:latest
+          tags: ghcr.io/raymondguo2/netflix-content:latest
           platforms: linux/amd64
